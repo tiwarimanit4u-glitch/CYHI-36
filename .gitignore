@@ -1,0 +1,16 @@
+# Ignore environment files
+.env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# Distribution / packaging
+build/
+*.egg-info/
+.dist/
+# Virtual environment
+venv/
+# Local test outputs
+.coverage
+htmlcov/
