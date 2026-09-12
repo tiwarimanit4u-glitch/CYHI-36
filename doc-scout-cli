@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+import sys
+from doc_scout.cli import cli
+
+if __name__ == '__main__':
+    sys.argv[0] = 'doc-scout'
+    cli()

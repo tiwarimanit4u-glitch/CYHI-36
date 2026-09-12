@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+set -e
+cmd="$1"
+shift
+if [[ "$cmd" == "auto-init" ]]; then
+  # Parse arguments
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --team)
+        TEAM="$2"
+        shift 2
+        ;;
+      --track)
+        TRACK="$2"
+        shift 2
+        ;;
+      *)
+        echo "Unknown argument $1" >&2
+        exit 1
+        ;;
+    esac
+  done
+  mkdir -p cyhi-logs/turns
+  mkdir -p cyhi-logs/bin
+  # Create state.json
+  cat > cyhi-logs/state.json <<EOF
+{
+  "team": "$TEAM",
+  "track": $TRACK,
+  "member": "coding-exorcists"
+}
+EOF
+  # Create a basic HANDOFF.md template
+  cat > HANDOFF.md <<EOF
+## Current state
+
+## Works
+
+## Broken
+
+## Next 3 things
+
+## Decisions (and why)
+
+## Don't retry
+EOF
+  # Ensure .claude/settings.json exists
+  if [ ! -f .claude/settings.json ]; then
+    echo '{}' > .claude/settings.json
+  fi
+  echo "Auto-init completed for team \"$TEAM\", track $TRACK"
+  exit 0
+elif [[ "$cmd" == "log" ]]; then
+  TYPE=""
+  SUMMARY=""
+  FILES=""
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      --type)
+        TYPE="$2"
+        shift 2
+        ;;
+      --summary)
+        SUMMARY="$2"
+        shift 2
+        ;;
+      --files)
+        FILES="$2"
+        shift 2
+        ;;
+      *)
+        echo "Unknown argument $1" >&2
+        exit 1
+        ;;
+    esac
+  done
+  # Read member from state.json (fallback)
+  MEMBER=$(grep -o '"member"[^:]*: *"[^"]*"' cyhi-logs/state.json | cut -d '"' -f4)
+  if [ -z "$MEMBER" ]; then
+    MEMBER="unknown"
+  fi
+  TRACK=$(grep -o '"track"[^:]*: *[0-9]*' cyhi-logs/state.json | cut -d ':' -f2 | tr -d ' ')
+  # Generate timestamp and turn number
+  TS=$(date -u +"%Y-%m-%dT%H:%M:%S%z")
+  SESSION=$(date +%s)
+  TURN_FILE="cyhi-logs/turns/${MEMBER}.jsonl"
+  if [ -f "$TURN_FILE" ]; then
+    TURN=$(($(wc -l < "$TURN_FILE") + 1))
+  else
+    TURN=1
+  fi
+  # Append JSON line
+  echo "{\"kind\":\"action\",\"ts\":\"$TS\",\"session\":\"$SESSION\",\"turn\":$TURN,\"member\":\"$MEMBER\",\"track\":$TRACK,\"type\":\"$TYPE\",\"summary\":\"$SUMMARY\",\"files\":[\"$FILES\"]}" >> "$TURN_FILE"
+  echo "Logged action $TYPE"
+  exit 0
+elif [[ "$cmd" == "hand-off" ]]; then
+  # Write stdin to HANDOFF.md
+  cat > HANDOFF.md
+  echo "HANDOFF updated"
+  exit 0
+else
+  echo "Unsupported command: $cmd"
+  exit 1
+fi
