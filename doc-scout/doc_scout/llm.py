@@ -18,7 +18,7 @@ try:
 except Exception:
     pass
 
-import logging
+import os
 from .diff import generate_diff
 
 _logger = logging.getLogger(__name__)

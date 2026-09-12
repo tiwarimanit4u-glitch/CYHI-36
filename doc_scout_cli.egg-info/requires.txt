@@ -1,0 +1,4 @@
+click
+gitpython
+google-generativeai
+rich

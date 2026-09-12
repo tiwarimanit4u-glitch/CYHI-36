@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "doc-scout-cli"
+version = "0.1.0"
+description = "AI‑augmented documentation drift detection CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Harsh", email = "harsh@example.com"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "click",
+    "rich",
+    "google-generativeai",
+    "gitpython",
+]
+
+[project.scripts]
+	doc-scout = "doc_scout.cli:cli"

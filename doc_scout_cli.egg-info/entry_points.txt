@@ -1,0 +1,2 @@
+[console_scripts]
+doc-scout = doc_scout.cli:cli

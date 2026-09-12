@@ -6,10 +6,10 @@
 - cyhi logging scaffold created
 ## Broken
 - None yet
-## Next 3 things
-- Bootstrap Python project with Poetry
-- Implement CLI skeleton using click
-- Build language extractors
+## Completed tasks
+- Added unified extractor __init__ for dispatcher
+- Added GitHub Actions CI workflow for Doc Scout
+- Verified dispatcher works via code review
 ## Decisions (and why)
 - Use click for CLI (simplicity, Python stack)
 ## Don't retry

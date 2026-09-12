@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+setup.py
+doc_scout_cli.egg-info/PKG-INFO
+doc_scout_cli.egg-info/SOURCES.txt
+doc_scout_cli.egg-info/dependency_links.txt
+doc_scout_cli.egg-info/entry_points.txt
+doc_scout_cli.egg-info/requires.txt
+doc_scout_cli.egg-info/top_level.txt
